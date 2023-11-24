@@ -7,13 +7,16 @@ import { List } from "@prisma/client"
 import { useState, useRef, ElementRef } from "react"
 import { toast } from "sonner"
 import { useEventListener } from "usehooks-ts"
+import {ListOptions} from "./list-options"
 
 interface ListHeaderProps {
-    data : List
+    data : List,
+    onAddCard : () => void
 }
 
 export const ListHeader = ({
-    data
+    data,
+    onAddCard
 } : ListHeaderProps ) => {
 
     const [title, setTitle] = useState(data.title)
@@ -58,15 +61,15 @@ export const ListHeader = ({
         boardId
       })
     }
-      const onBlur = () => {
-        formRef.current?.requestSubmit
-      }
+    const onBlur = () => {
+      formRef.current?.requestSubmit
+    }
 
-      const onKeyDown = (e: KeyboardEvent) => {
-        if(e.key === "Escape") {
-          formRef.current?.requestSubmit();
-        }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if(e.key === "Escape") {
+        formRef.current?.requestSubmit();
       }
+    }
 
     useEventListener("keydown", onKeyDown)
 
@@ -94,6 +97,10 @@ export const ListHeader = ({
               {title}
             </div>
           )}
+          <ListOptions
+            data={data}
+            onAddCard={onAddCard}
+          />
         </div>
     )
 }
